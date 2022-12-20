@@ -1,2 +1,2 @@
 # nvim-config
-my neovim configs
+A nvim kickstarter fork with my neovim configs and mappings.
