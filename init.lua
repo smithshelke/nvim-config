@@ -58,6 +58,26 @@ require('packer').startup(function(use)
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
+  use({
+  "jackMort/ChatGPT.nvim", requires = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" }
+})
+
+  require("chatgpt").setup({
+     question_sign = "Q: ",
+     answer_sign = "A: "
+  })
+
+  use { 
+  'olivercederborg/poimandres.nvim',
+  config = function()
+    require('poimandres').setup {
+      -- leave this setup function empty for default config
+      -- or refer to the configuration section
+      -- for configuration options
+    }
+  end
+  }
+
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, 'custom.plugins')
   if has_plugins then
@@ -119,7 +139,7 @@ vim.wo.signcolumn = 'yes'
 -- Set colorscheme
 vim.o.termguicolors = true
 -- vim.cmd [[colorscheme gruvbox]]
-vim.cmd [[colorscheme onedark]]
+vim.cmd [[colorscheme poimandres]]
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -151,6 +171,11 @@ vim.keymap.set('n', 'sv', ":vsplit<CR><C-w>w", { desc = '[S]plit window [V]ertic
 vim.keymap.set('n', ':W', ":w<CR>", { desc = 'Write file' })
 vim.keymap.set('n', ':Q', ":q<CR>", { desc = 'Close file' })
 vim.keymap.set('n', ':Wq', "wq<CR>", { desc = 'Save and Quit file' })
+
+-- Git remaps
+vim.keymap.set('n', '<leader>gs', ":G<CR>", { desc = 'Git Status' })
+vim.keymap.set('n', '<leader>gl', ":Git blame<CR>", { desc = 'Git Blame' })
+
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
