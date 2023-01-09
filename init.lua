@@ -138,8 +138,8 @@ vim.wo.signcolumn = 'yes'
 
 -- Set colorscheme
 vim.o.termguicolors = true
--- vim.cmd [[colorscheme gruvbox]]
-vim.cmd [[colorscheme poimandres]]
+vim.cmd [[colorscheme gruvbox]]
+-- vim.cmd [[colorscheme poimandres]]
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -193,7 +193,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 require('lualine').setup {
   options = {
     icons_enabled = false,
-    theme = 'onedark',
+    theme = 'gruvbox',
     component_separators = '|',
     section_separators = '',
   },
@@ -377,7 +377,7 @@ require('mason').setup()
 
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
-local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver', 'sumneko_lua', 'gopls'}
+local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver', 'sumneko_lua', 'gopls', 'solargraph'}
 
 -- Ensure the servers above are installed
 require('mason-lspconfig').setup {
@@ -404,6 +404,13 @@ require('fidget').setup()
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init.lua')
+
+require('lspconfig').solargraph.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  root_dir = require('lspconfig').util.root_pattern("Gemfile", ".git"),
+  cmd = { "bundle", "exec", "solargraph", "socket" }
+}
 
 require('lspconfig').sumneko_lua.setup {
   on_attach = on_attach,
