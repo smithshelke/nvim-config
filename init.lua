@@ -47,6 +47,7 @@ require('packer').startup(function(use)
 
   use 'navarasu/onedark.nvim' -- Theme inspired by Atom
   use 'ellisonleao/gruvbox.nvim' -- Theme inspired by gruvbox
+  use 'https://github.com/fcpg/vim-fahrenheit' -- Theme inspired by itemr
   use 'nvim-lualine/lualine.nvim' -- Fancier statusline
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
@@ -138,6 +139,46 @@ vim.wo.signcolumn = 'yes'
 
 -- Set colorscheme
 vim.o.termguicolors = true
+require("gruvbox").setup({
+    palette_overrides = {
+      dark0_hard = "#000000",
+      dark0 = "#000000",
+      dark0_soft = "#32302f",
+      dark1 = "#000000",
+      dark2 = "#504945",
+      dark3 = "#665c54",
+      dark4 = "#7c6f64",
+      light0_hard = "#f9f5d7",
+      light0 = "#fbf1c7",
+      light0_soft = "#f2e5bc",
+      light1 = "#ebdbb2",
+      light2 = "#d5c4a1",
+      light3 = "#bdae93",
+      light4 = "#a89984",
+      bright_red = "#fb4934",
+      bright_green = "#b8bb26",
+      bright_yellow = "#fabd2f",
+      bright_blue = "#83a598",
+      bright_purple = "#d3869b",
+      bright_aqua = "#8ec07c",
+      bright_orange = "#fe8019",
+      neutral_red = "#cc241d",
+      neutral_green = "#98971a",
+      neutral_yellow = "#d79921",
+      neutral_blue = "#458588",
+      neutral_purple = "#b16286",
+      neutral_aqua = "#689d6a",
+      neutral_orange = "#d65d0e",
+      faded_red = "#9d0006",
+      faded_green = "#79740e",
+      faded_yellow = "#b57614",
+      faded_blue = "#076678",
+      faded_purple = "#8f3f71",
+      faded_aqua = "#427b58",
+      faded_orange = "#af3a03",
+      gray = "#928374",
+    }
+})
 vim.cmd [[colorscheme gruvbox]]
 -- vim.cmd [[colorscheme poimandres]]
 
@@ -192,8 +233,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- See `:help lualine.txt`
 require('lualine').setup {
   options = {
-    icons_enabled = false,
-    theme = 'gruvbox',
+    icons_enabled = true,
+    theme = 'ayu_dark',
     component_separators = '|',
     section_separators = '',
   },
@@ -250,7 +291,7 @@ end, { desc = '[/] Fuzzily search in current buffer]' })
 
 vim.keymap.set('n', '<C-p>', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
+vim.keymap.set('n', '<leader>pw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>ls', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
@@ -377,7 +418,7 @@ require('mason').setup()
 
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
-local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver', 'sumneko_lua', 'gopls', 'solargraph'}
+local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver', 'sumneko_lua', 'gopls'}
 
 -- Ensure the servers above are installed
 require('mason-lspconfig').setup {
@@ -404,13 +445,6 @@ require('fidget').setup()
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init.lua')
-
-require('lspconfig').solargraph.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  root_dir = require('lspconfig').util.root_pattern("Gemfile", ".git"),
-  cmd = { "bundle", "exec", "solargraph", "socket" }
-}
 
 require('lspconfig').sumneko_lua.setup {
   on_attach = on_attach,
