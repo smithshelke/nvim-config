@@ -3,7 +3,7 @@ local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nv
 local is_bootstrap = false
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   is_bootstrap = true
-  vim.fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  vim.fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
   vim.cmd [[packadd packer.nvim]]
 end
 
@@ -53,6 +53,8 @@ require('packer').startup(function(use)
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
 
+  use "windwp/nvim-autopairs" -- Auto complete quotes, brackets etc
+
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
 
@@ -60,23 +62,24 @@ require('packer').startup(function(use)
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
   use({
-  "jackMort/ChatGPT.nvim", requires = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" }
-})
-
-  require("chatgpt").setup({
-     question_sign = "Q: ",
-     answer_sign = "A: "
+    "jackMort/ChatGPT.nvim",
+    requires = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" }
   })
 
-  use { 
-  'olivercederborg/poimandres.nvim',
-  config = function()
-    require('poimandres').setup {
-      -- leave this setup function empty for default config
-      -- or refer to the configuration section
-      -- for configuration options
-    }
-  end
+  require("chatgpt").setup({
+    question_sign = "Q: ",
+    answer_sign = "A: "
+  })
+
+  use {
+    'olivercederborg/poimandres.nvim',
+    config = function()
+      require('poimandres').setup {
+        -- leave this setup function empty for default config
+        -- or refer to the configuration section
+        -- for configuration options
+      }
+    end
   }
 
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
@@ -137,47 +140,53 @@ vim.o.smartcase = true
 vim.o.updatetime = 250
 vim.wo.signcolumn = 'yes'
 
+-- tab spaces
+vim.o.expandtab = true
+vim.o.smartindent = true
+vim.o.tabstop = 2
+vim.o.shiftwidth = 4
+
 -- Set colorscheme
 vim.o.termguicolors = true
 require("gruvbox").setup({
-    palette_overrides = {
-      dark0_hard = "#000000",
-      dark0 = "#000000",
-      dark0_soft = "#32302f",
-      dark1 = "#000000",
-      dark2 = "#504945",
-      dark3 = "#665c54",
-      dark4 = "#7c6f64",
-      light0_hard = "#f9f5d7",
-      light0 = "#fbf1c7",
-      light0_soft = "#f2e5bc",
-      light1 = "#ebdbb2",
-      light2 = "#d5c4a1",
-      light3 = "#bdae93",
-      light4 = "#a89984",
-      bright_red = "#fb4934",
-      bright_green = "#b8bb26",
-      bright_yellow = "#fabd2f",
-      bright_blue = "#83a598",
-      bright_purple = "#d3869b",
-      bright_aqua = "#8ec07c",
-      bright_orange = "#fe8019",
-      neutral_red = "#cc241d",
-      neutral_green = "#98971a",
-      neutral_yellow = "#d79921",
-      neutral_blue = "#458588",
-      neutral_purple = "#b16286",
-      neutral_aqua = "#689d6a",
-      neutral_orange = "#d65d0e",
-      faded_red = "#9d0006",
-      faded_green = "#79740e",
-      faded_yellow = "#b57614",
-      faded_blue = "#076678",
-      faded_purple = "#8f3f71",
-      faded_aqua = "#427b58",
-      faded_orange = "#af3a03",
-      gray = "#928374",
-    }
+  palette_overrides = {
+    dark0_hard = "#000000",
+    dark0 = "#000000",
+    dark0_soft = "#32302f",
+    dark1 = "#000000",
+    dark2 = "#504945",
+    dark3 = "#665c54",
+    dark4 = "#7c6f64",
+    light0_hard = "#f9f5d7",
+    light0 = "#fbf1c7",
+    light0_soft = "#f2e5bc",
+    light1 = "#ebdbb2",
+    light2 = "#d5c4a1",
+    light3 = "#bdae93",
+    light4 = "#a89984",
+    bright_red = "#fb4934",
+    bright_green = "#b8bb26",
+    bright_yellow = "#fabd2f",
+    bright_blue = "#83a598",
+    bright_purple = "#d3869b",
+    bright_aqua = "#8ec07c",
+    bright_orange = "#fe8019",
+    neutral_red = "#cc241d",
+    neutral_green = "#98971a",
+    neutral_yellow = "#d79921",
+    neutral_blue = "#458588",
+    neutral_purple = "#b16286",
+    neutral_aqua = "#689d6a",
+    neutral_orange = "#d65d0e",
+    faded_red = "#9d0006",
+    faded_green = "#79740e",
+    faded_yellow = "#b57614",
+    faded_blue = "#076678",
+    faded_purple = "#8f3f71",
+    faded_aqua = "#427b58",
+    faded_orange = "#af3a03",
+    gray = "#928374",
+  }
 })
 vim.cmd [[colorscheme gruvbox]]
 -- vim.cmd [[colorscheme poimandres]]
@@ -185,7 +194,7 @@ vim.cmd [[colorscheme gruvbox]]
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
--- Set Relative number 
+-- Set Relative number
 vim.o.relativenumber = true
 
 -- [[ Basic Keymaps ]]
@@ -207,6 +216,8 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set('n', '<C-f>', ":Explore<CR>", { desc = 'Explore [F]iles' })
 vim.keymap.set('n', 'ss', ":split<CR><C-w>w", { desc = '[S]plit window' })
 vim.keymap.set('n', 'sv', ":vsplit<CR><C-w>w", { desc = '[S]plit window [V]ertically' })
+vim.keymap.set("n", "<C-j>", "<cmd>cnext<CR>zz")
+vim.keymap.set("n", "<C-k>", "<cmd>cprev<CR>zz")
 
 -- fat finger keymaps
 vim.keymap.set('n', ':W', ":w<CR>", { desc = 'Write file' })
@@ -216,6 +227,8 @@ vim.keymap.set('n', ':Wq', "wq<CR>", { desc = 'Save and Quit file' })
 -- Git remaps
 vim.keymap.set('n', '<leader>gs', ":G<CR>", { desc = 'Git Status' })
 vim.keymap.set('n', '<leader>gl', ":Git blame<CR>", { desc = 'Git Blame' })
+vim.keymap.set('n', '<leader>gc', ":lua require('telescope.builtin').git_commits()<CR>", { desc = 'Git Commits' })
+vim.keymap.set('n', '<leader>gb', ":lua require('telescope.builtin').git_branches()<CR>", { desc = 'Git Branches' })
 
 
 -- [[ Highlight on yank ]]
@@ -402,7 +415,7 @@ local on_attach = function(_, bufnr)
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+  nmap('<C-s>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -427,7 +440,7 @@ require('mason').setup()
 
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
-local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver', 'sumneko_lua', 'gopls'}
+local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver', 'sumneko_lua', 'gopls', 'svelte' }
 
 -- Ensure the servers above are installed
 require('mason-lspconfig').setup {
@@ -519,6 +532,33 @@ cmp.setup {
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
+  },
+}
+
+-- setup nvim-autopairs
+local status_ok, npairs = pcall(require, "nvim-autopairs")
+if not status_ok then
+  return
+end
+
+npairs.setup {
+  check_ts = true,
+  ts_config = {
+    lua = { "string", "source" },
+    javascript = { "string", "template_string" },
+    java = false,
+  },
+  disable_filetype = { "TelescopePrompt", "spectre_panel" },
+  fast_wrap = {
+    map = "<M-e>",
+    chars = { "{", "[", "(", '"', "'" },
+    pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], "%s+", ""),
+    offset = 0, -- Offset from pattern match
+    end_key = "$",
+    keys = "qwertyuiopzxcvbnmasdfghjkl",
+    check_comma = true,
+    highlight = "PmenuSel",
+    highlight_grey = "LineNr",
   },
 }
 
